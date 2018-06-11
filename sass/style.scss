@@ -1,0 +1,30 @@
+.game {
+  text-align: center;
+  font-size: 15px;
+  font-family: Arial;
+}
+
+#new-game {
+  display: block;
+  margin: 0 auto;
+  width: 320px;
+  height: 60px;
+  background-color: #2ecc71;
+  font-size: 30px;
+}
+
+.game-buttons  {
+  color: black;
+  background-color: #bdc3c7;
+  display: inline-block;
+  margin: 15px 5px 30px 5px;
+  width: 100px;
+  height: 40px;
+}
+#buttons {
+  display:flex;
+  justify-content: center;
+}
+button:disabled {
+  opacity: 0.5;
+}
