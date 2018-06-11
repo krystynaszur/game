@@ -18,16 +18,22 @@
   <button id="new-game"> NEW GAME</button><br><br>
   <div id="welcome"></div>
   <div id="buttons">
-    <button id="paper" class="game-buttons"     disabled>Paper</button>
-    <button id="scissors" class="game-buttons" disabled>Scissors</button>
-    <button id="rock" class="game-buttons" disabled>Rock</button>
+    <button id="paper" class="game-buttons player-move"     disabled data-move="paper">Paper</button>
+    <button id="scissors" class="game-buttons player-move" disabled data-move="scissors">Scissors</button>
+    <button id="rock" class="game-buttons player-move" disabled data-move="rock">Rock</button>
   </div>
   <div id="output"></div>
   <div id="result"></div>
   <div id="total result"></div>
 </div>
-  
-  
+ 
+<div class="overlay" id="modal-overlay">
+	<div class="modal" id="game-end">
+		<a href="#" class="close">x</a>
+		<div id="game-results">
+		</div>
+	</div>
+</div>
 
     <script  src="js/index.js"></script>
 

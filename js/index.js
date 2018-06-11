@@ -2,7 +2,8 @@ var gameSettings = {
 playerWins: 0,
 computerWins: 0,
 maxRounds: 0,
-playedRounds: 0
+playedRounds: 0,
+endOfGame: undefined
 };
 
 var random = function(items)
@@ -96,6 +97,18 @@ var playerWin=0;
 result.innerHTML = "Round result: " + playerWin + "-" + computerWin;
 }
 
+var deactivateGame = function () {
+  if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
+    showModal(event);
+  var welcome = document.getElementById('welcome');
+  welcome.innerHTML="Game over, please press the NEW GAME button!<br><br>";
+  
+  document.getElementById("paper").setAttribute("disabled", "disabled");
+  document.getElementById("scissors").setAttribute("disabled", "disabled");
+  document.getElementById("rock").setAttribute("disabled", "disabled");
+  }
+}
+
 var startRound = function(move) {
 
   if (gameSettings.maxRounds >0) { //dodajesz ten warunek,żeby gra nie była możliwa bez podania liczby rund
@@ -113,7 +126,7 @@ var scissorsButton = document.getElementById('scissors');
 var rockButton = document.getElementById('rock');
 
 
-paperButton.addEventListener('click', function() {
+/*paperButton.addEventListener('click', function() {
   startRound('paper');
 });
 
@@ -123,11 +136,20 @@ scissorsButton.addEventListener('click', function() {
 
 rockButton.addEventListener('click', function() { 
   startRound('rock');
-});
+});*/
 
+var buttons = document.querySelectorAll('.player-move');
+	
+for(var i = 0; i < buttons.length; i++) {
+    var chosenButton = buttons[i].getAttribute('data-move');
+    buttons[i].addEventListener('click', function() {
+      startRound(chosenButton);
+    });
+  };
+  
 var showTotalResult = function(roundResult) {
- 
-  var endOfGame
+  
+  //var endOfGame
   
   if (roundResult.winner == 'player') {
     gameSettings.playerWins++;
@@ -142,15 +164,15 @@ var showTotalResult = function(roundResult) {
     gameSettings.playedRounds++;
   
   if (gameSettings.playerWins == gameSettings.maxRounds) {
-    var endOfGame = 'You won the entire game'}
+    gameSettings.endOfGame = 'You won the entire game'}
   else if (gameSettings.computerWins == gameSettings.maxRounds) {
-    var endOfGame = 'The computer won the entire game'}
+    gameSettings.endOfGame = 'The computer won the entire game'}
   else {
-    var endOfGame = 'Keep playing!'}
+    gameSettings.endOfGame = 'Keep playing!'}
   
 var total = document.getElementById('total result');
 total.innerHTML = "Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + '.<br>The number of played rounds is: ' + gameSettings.playedRounds+'.'
-  + '<br>The number of points needed for victory is: ' + gameSettings.maxRounds+'.'+ '<br>' + endOfGame
+  + '<br>The number of points needed for victory is: ' + gameSettings.maxRounds+'.'+ '<br>' + gameSettings.endOfGame;
 }
 
 var newGame = document.getElementById('new-game');
@@ -170,7 +192,7 @@ newGame.addEventListener('click', function() {
  total.innerHTML=" "; //usuwasz wszystkie teksty, możesz to też zrobić za pomoc querySelectorAll, ale powstaje z tego tablica
   var welcome = document.getElementById('welcome');
 welcome.innerHTML="Good luck!<br><br>";
-})
+});
 
 var activateGame = function() {
   
@@ -181,16 +203,55 @@ var activateGame = function() {
   }
 }
 
-var deactivateGame = function ()
-{
-  if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
+var showModal = function(event){
+  event.preventDefault();
+  document.querySelector('#modal-overlay').classList.add('show');
 
+/*var chosenLink = this.getAttribute('href');
+console.log(chosenLink);*/
+
+document.querySelector('#game-end').classList.add('show');
+var showGameResults = document.getElementById('game-results')
+showGameResults.innerHTML ="Game over, please press the NEW GAME button!<br><br> Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + "<br><br>" + gameSettings.endOfGame;
+
+var output = document.getElementById('output');
+output.innerHTML=" ";
+ var result = document.getElementById('result');
+result.innerHTML=" ";
+  var total = document.getElementById('total result');
+total.innerHTML=" ";
+
+}
+var hideModal = function(event){
+  event.preventDefault();
+  document.querySelector('#modal-overlay').classList.remove('show');
+};
+
+var closeButtons = document.querySelectorAll('.modal .close');
+
+for(var i = 0; i < closeButtons.length; i++){
+  closeButtons[i].addEventListener('click', hideModal);
+}
+
+document.querySelector('#modal-overlay').addEventListener('click', hideModal);
+
+var modals = document.querySelectorAll('.modal');
+
+for(var i = 0; i < modals.length; i++){
+  modals[i].addEventListener('click', function(event){
+    event.stopPropagation();
+  });
+}
+
+var deactivateGame = function () {
+  if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
+    showModal(event);
   var welcome = document.getElementById('welcome');
   welcome.innerHTML="Game over, please press the NEW GAME button!<br><br>";
-
+  
   document.getElementById("paper").setAttribute("disabled", "disabled");
   document.getElementById("scissors").setAttribute("disabled", "disabled");
   document.getElementById("rock").setAttribute("disabled", "disabled");
+  }
 }
 
-};

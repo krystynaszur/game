@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Sunflower:300');
-
+@import url("https://fonts.googleapis.com/css?family=Sunflower:300");
 body {
   padding: 10px;
   text-align: center;
@@ -90,3 +89,5 @@ button:disabled {
   min-height: 30px;
   padding: 5px 30px;
 }
+
+/*# sourceMappingURL=style.css.map */
