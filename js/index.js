@@ -187,10 +187,20 @@ var showTotalResult = function(roundResult) {
   + '<br>The number of points needed for victory is: ' + gameSettings.maxRounds+'.'+ '<br>' + gameSettings.endOfGame;
   }
 
-var newGame = document.getElementById('new-game');
 
-newGame.addEventListener('click', function() {
-	gameSettings.maxRounds = window.prompt('How many points mean victory in the entire game?');
+  
+  var enterGameSettings = function(event){
+    event.preventDefault();
+    document.querySelector('#modal-overlay').classList.add('show');
+    document.querySelector('#enter-settings').classList.add('show');
+    var request = document.getElementById('request');
+    request.innerHTML="Please decide about the settings!";
+
+    var enteredUsername = document.getElementById('username').value;
+    console.log(enteredUsername);
+    
+  
+	gameSettings.maxRounds = document.getElementById('wins').value;
   gameSettings.playerWins =0;
   gameSettings.computerWins=0;
   gameSettings.playedRounds=0;
@@ -206,7 +216,12 @@ newGame.addEventListener('click', function() {
  gameResultsRows.innerHTML="<tr><th>Round number: </th><th>Player move: </th><th>Computer move: </th><th>Round winner: </th><th>Current result: </th></tr>";
   var welcome = document.getElementById('welcome');
 welcome.innerHTML="Good luck!<br><br>";
-});
+};
+
+
+var newGame = document.getElementById('new-game');
+
+newGame.addEventListener('click', enterGameSettings);
 
 var activateGame = function() {
   if (gameSettings.maxRounds >0) {
