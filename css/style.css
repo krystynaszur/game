@@ -90,4 +90,8 @@ button:disabled {
   padding: 5px 30px;
 }
 
+th {
+  color: red;
+}
+
 /*# sourceMappingURL=style.css.map */

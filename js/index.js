@@ -3,7 +3,8 @@ playerWins: 0,
 computerWins: 0,
 maxRounds: 0,
 playedRounds: 0,
-endOfGame: undefined
+endOfGame: undefined,
+progress: []
 };
 
 var random = function(items)
@@ -78,7 +79,7 @@ return result;
 
 var showResult = function(roundResult, move, computer) {
   var output = document.getElementById("output");
-output.innerHTML = roundResult.text + ' You chose ' + move + ' while the computer chose '+ computer + '.';
+  output.innerHTML = roundResult.text + ' You chose ' + move + ' while the computer chose '+ computer + '.';
 }
 
 var gameResult = function(roundResult) {
@@ -112,31 +113,48 @@ var deactivateGame = function () {
 var startRound = function(move) {
 
   if (gameSettings.maxRounds >0) { //dodajesz ten warunek,żeby gra nie była możliwa bez podania liczby rund
-var computer = computerMove();
-var roundResult = playerMove(move, computer);
-showResult(roundResult, move, computer);
-gameResult (roundResult);
-showTotalResult(roundResult);
-deactivateGame();
+    var computer = computerMove();
+    var roundResult = playerMove(move, computer);
+    showResult(roundResult, move, computer);
+    gameResult (roundResult);
+    showTotalResult(roundResult);
+    deactivateGame();
   }
-}
+
+ var roundResultsForTable = { //tworzę obiekt
+    roundNumber: gameSettings.playedRounds,
+    playerMove: move,
+    computerMove: computer,
+    roundResult: roundResult.winner,
+    currentResult:  gameSettings.playerWins + "-" + gameSettings.computerWins 
+  }
+
+  gameSettings.progress.push(roundResultsForTable); //przesuwam obiekt do tabeli
+  console.log(gameSettings.progress);
+
+  for(var i = 0; i < gameSettings.progress.length; i++) {
+    var gameResultsTableRows ='';
+    gameResultsTableRows += '<tr><td>' + 
+      gameSettings.progress[i].roundNumber  + 
+      '</td><td>' + 
+      gameSettings.progress[i].playerMove  + 
+      '</td><td>' +
+      gameSettings.progress[i].computerMove +
+      '</td><td>' +
+      gameSettings.progress[i].roundResult +
+      '</td><td>' +
+      gameSettings.progress[i].currentResult +
+      '</td></tr>';
+    console.log(gameResultsTableRows);
+  }
+
+  var gameResultsRows = document.getElementById('game-results-table');
+  gameResultsRows.innerHTML += gameResultsTableRows
+}  
 
 var paperButton = document.getElementById('paper');
 var scissorsButton = document.getElementById('scissors');
 var rockButton = document.getElementById('rock');
-
-
-/*paperButton.addEventListener('click', function() {
-  startRound('paper');
-});
-
-scissorsButton.addEventListener('click', function() {
-    startRound('scissors');
- });
-
-rockButton.addEventListener('click', function() { 
-  startRound('rock');
-});*/
 
 var buttons = document.querySelectorAll('.player-move');
 	
@@ -145,22 +163,16 @@ for(var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function() {
       startRound(chosenButton);
     });
-  };
+};
   
 var showTotalResult = function(roundResult) {
   
-  //var endOfGame
-  
   if (roundResult.winner == 'player') {
     gameSettings.playerWins++;
-   
   }
   else if (roundResult.winner == 'computer') {
     gameSettings.computerWins++;
   }
-  else if (roundResult.winner == 'draw') {
-  }
-  
     gameSettings.playedRounds++;
   
   if (gameSettings.playerWins == gameSettings.maxRounds) {
@@ -170,10 +182,10 @@ var showTotalResult = function(roundResult) {
   else {
     gameSettings.endOfGame = 'Keep playing!'}
   
-var total = document.getElementById('total result');
-total.innerHTML = "Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + '.<br>The number of played rounds is: ' + gameSettings.playedRounds+'.'
+  var total = document.getElementById('total result');
+  total.innerHTML = "Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + '.<br>The number of played rounds is: ' + gameSettings.playedRounds+'.'
   + '<br>The number of points needed for victory is: ' + gameSettings.maxRounds+'.'+ '<br>' + gameSettings.endOfGame;
-}
+  }
 
 var newGame = document.getElementById('new-game');
 
@@ -190,38 +202,36 @@ newGame.addEventListener('click', function() {
  result.innerHTML=" ";
    var total = document.getElementById('total result');
  total.innerHTML=" "; //usuwasz wszystkie teksty, możesz to też zrobić za pomoc querySelectorAll, ale powstaje z tego tablica
+ var gameResultsRows = document.getElementById('game-results-table');
+ gameResultsRows.innerHTML="<tr><th>Round number: </th><th>Player move: </th><th>Computer move: </th><th>Round winner: </th><th>Current result: </th></tr>";
   var welcome = document.getElementById('welcome');
 welcome.innerHTML="Good luck!<br><br>";
 });
 
 var activateGame = function() {
-  
   if (gameSettings.maxRounds >0) {
-                  document.getElementById("paper").removeAttribute("disabled");
- document.getElementById("scissors").removeAttribute("disabled");
- document.getElementById("rock").removeAttribute("disabled");
+  document.getElementById("paper").removeAttribute("disabled");
+  document.getElementById("scissors").removeAttribute("disabled");
+  document.getElementById("rock").removeAttribute("disabled");
   }
 }
 
 var showModal = function(event){
   event.preventDefault();
   document.querySelector('#modal-overlay').classList.add('show');
+  document.querySelector('#game-end').classList.add('show');
 
-/*var chosenLink = this.getAttribute('href');
-console.log(chosenLink);*/
+  var showGameResults = document.getElementById('game-results');
+  showGameResults.innerHTML ="Game over, please press the NEW GAME button!<br><br> Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + "<br><br> " + gameSettings.endOfGame + "<br><br>Here is the game progress: <br><br> ";
 
-document.querySelector('#game-end').classList.add('show');
-var showGameResults = document.getElementById('game-results')
-showGameResults.innerHTML ="Game over, please press the NEW GAME button!<br><br> Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + "<br><br>" + gameSettings.endOfGame;
+  var output = document.getElementById('output');
+  output.innerHTML=" ";
+  var result = document.getElementById('result');
+  result.innerHTML=" ";
+    var total = document.getElementById('total result');
+  total.innerHTML=" ";
+};
 
-var output = document.getElementById('output');
-output.innerHTML=" ";
- var result = document.getElementById('result');
-result.innerHTML=" ";
-  var total = document.getElementById('total result');
-total.innerHTML=" ";
-
-}
 var hideModal = function(event){
   event.preventDefault();
   document.querySelector('#modal-overlay').classList.remove('show');
