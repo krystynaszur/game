@@ -16,15 +16,14 @@
 
   <div class="game">
   <button id="new-game"> NEW GAME</button><br><br>
-  <div id="welcome"></div>
-  <div id="buttons">
+    <div id="buttons">
     <button id="paper" class="game-buttons player-move"     disabled data-move="paper">Paper</button>
     <button id="scissors" class="game-buttons player-move" disabled data-move="scissors">Scissors</button>
     <button id="rock" class="game-buttons player-move" disabled data-move="rock">Rock</button>
   </div>
   <div id="output"></div>
-  <div id="result"></div>
-  <div id="total result"></div>
+  <div id="round-result"></div>
+  <div id="total-result"></div>
 </div>
  
 <div class="overlay" id="modal-overlay">
@@ -33,16 +32,16 @@
 		<div id="game-results">
         </div> 
         <table id="game-results-table">
-            <tr><td>Mumber of round</td>
-                <td>Player move</td>
-                <td>Computer move</td>
-                <td>Round result</td>
-                <td>Current game result</td></tr>
+            <tr><th>Round number</th>
+                <th>Player move</th>
+                <th>Computer move</th>
+                <th>Round result</th>
+                <th>Current game result</th>
+            </tr>
         </table>
     </div>
     <div class="modal" id="enter-settings">
-      <div id="request">
-      </div> 
+      Please choose the game settings!<br>
       <p>Enter your name<br>
       <input type="text" name="username" id ="username">
       </p>
