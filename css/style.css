@@ -64,10 +64,7 @@ button:disabled {
   transform: translate3d(-50%, -50%, 0);
 }
 
-.show #enter-settings {
-  display: block;
-}
-.show #game-end {
+.show {
   display: block;
 }
 
