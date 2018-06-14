@@ -100,7 +100,7 @@ result.innerHTML = "Round result: " + playerWin + "-" + computerWin;
 
 var deactivateGame = function () {
   if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
-    showModal(event);
+    gameEnd(event);
   var welcome = document.getElementById('welcome');
   welcome.innerHTML="Game over, please press the NEW GAME button!<br><br>";
   
@@ -198,11 +198,11 @@ var showTotalResult = function(roundResult) {
       document.getElementById("rock").removeAttribute("disabled");
     }
   }
-  
+
    var activateGame = function() {
   
     var enteredUsername = document.getElementById('username').value;
-    enteredWins = document.getElementById('wins').value;
+    var enteredWins = document.getElementById('wins').value;
     activateButtons(enteredUsername, enteredWins);
   
    /* if (gameSettings.maxRounds >0) {
@@ -210,12 +210,15 @@ var showTotalResult = function(roundResult) {
       document.getElementById("scissors").removeAttribute("disabled");
       document.getElementById("rock").removeAttribute("disabled");
     }*/
+  
+    document.querySelector('#modal-overlay').classList.remove('show');
   }
  
   var enterGameSettings = function(event){
     event.preventDefault();
-    document.querySelector('#modal-overlay').classList.add('show');
-    document.querySelector('#enter-settings').classList.add('show');
+    document.getElementById('modal-overlay').classList.add('show');
+    document.getElementById('enter-settings').classList.add('show');
+    document.getElementById('game-results').classList.remove('show');
     var request = document.getElementById('request');
     request.innerHTML="Please decide about the settings!";
   
@@ -235,18 +238,19 @@ var showTotalResult = function(roundResult) {
   var welcome = document.getElementById('welcome');
 welcome.innerHTML="Good luck!<br><br>";*/
 
+};
 var submit = document.getElementById("submit-button");
 submit.addEventListener('click', activateGame);
-};
 
 var newGame = document.getElementById('new-game');
 
 newGame.addEventListener('click', enterGameSettings);
 
-var showModal = function(event){
+var gameEnd = function(event){
   event.preventDefault();
-  document.querySelector('#modal-overlay').classList.add('show');
-  document.querySelector('#game-end').classList.add('show');
+  document.getElementById('modal-overlay').classList.add('show');
+  document.getElementById('game-end').classList.add('show');
+  document.getElementById('enter-settings').classList.remove('show');
 
   var showGameResults = document.getElementById('game-results');
   showGameResults.innerHTML ="Game over, please press the NEW GAME button!<br><br> Total result is: " + gameSettings.playerWins + "-" + gameSettings.computerWins + "<br><br> " + gameSettings.endOfGame + "<br><br>Here is the game progress: <br><br> ";
