@@ -113,6 +113,7 @@ var deactivateGame = function () {
 var startRound = function(move) {
 
   if (gameSettings.maxRounds >0) { //dodajesz ten warunek,żeby gra nie była możliwa bez podania liczby rund
+    
     var computer = computerMove();
     var roundResult = playerMove(move, computer);
     showResult(roundResult, move, computer);
@@ -187,26 +188,43 @@ var showTotalResult = function(roundResult) {
   + '<br>The number of points needed for victory is: ' + gameSettings.maxRounds+'.'+ '<br>' + gameSettings.endOfGame;
   }
 
+  var activateButtons = function(enteredUsername, enteredWins) {
+    
+   gameSettings.maxRounds = enteredWins;
 
+    if (gameSettings.maxRounds >0) {
+      document.getElementById("paper").removeAttribute("disabled");
+      document.getElementById("scissors").removeAttribute("disabled");
+      document.getElementById("rock").removeAttribute("disabled");
+    }
+  }
   
+   var activateGame = function() {
+  
+    var enteredUsername = document.getElementById('username').value;
+    enteredWins = document.getElementById('wins').value;
+    activateButtons(enteredUsername, enteredWins);
+  
+   /* if (gameSettings.maxRounds >0) {
+      document.getElementById("paper").removeAttribute("disabled");
+      document.getElementById("scissors").removeAttribute("disabled");
+      document.getElementById("rock").removeAttribute("disabled");
+    }*/
+  }
+ 
   var enterGameSettings = function(event){
     event.preventDefault();
     document.querySelector('#modal-overlay').classList.add('show');
     document.querySelector('#enter-settings').classList.add('show');
     var request = document.getElementById('request');
     request.innerHTML="Please decide about the settings!";
-
-    var enteredUsername = document.getElementById('username').value;
-    console.log(enteredUsername);
-    
   
-	gameSettings.maxRounds = document.getElementById('wins').value;
+  gameSettings.maxRounds=0;
   gameSettings.playerWins =0;
   gameSettings.computerWins=0;
   gameSettings.playedRounds=0;
-  activateGame();
   
- var output = document.getElementById('output');
+ /*var output = document.getElementById('output');
  output.innerHTML=" ";
   var result = document.getElementById('result');
  result.innerHTML=" ";
@@ -215,21 +233,15 @@ var showTotalResult = function(roundResult) {
  var gameResultsRows = document.getElementById('game-results-table');
  gameResultsRows.innerHTML="<tr><th>Round number: </th><th>Player move: </th><th>Computer move: </th><th>Round winner: </th><th>Current result: </th></tr>";
   var welcome = document.getElementById('welcome');
-welcome.innerHTML="Good luck!<br><br>";
-};
+welcome.innerHTML="Good luck!<br><br>";*/
 
+var submit = document.getElementById("submit-button");
+submit.addEventListener('click', activateGame);
+};
 
 var newGame = document.getElementById('new-game');
 
 newGame.addEventListener('click', enterGameSettings);
-
-var activateGame = function() {
-  if (gameSettings.maxRounds >0) {
-  document.getElementById("paper").removeAttribute("disabled");
-  document.getElementById("scissors").removeAttribute("disabled");
-  document.getElementById("rock").removeAttribute("disabled");
-  }
-}
 
 var showModal = function(event){
   event.preventDefault();
@@ -268,15 +280,4 @@ for(var i = 0; i < modals.length; i++){
   });
 }
 
-var deactivateGame = function () {
-  if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
-    showModal(event);
-  var welcome = document.getElementById('welcome');
-  welcome.innerHTML="Game over, please press the NEW GAME button!<br><br>";
-  
-  document.getElementById("paper").setAttribute("disabled", "disabled");
-  document.getElementById("scissors").setAttribute("disabled", "disabled");
-  document.getElementById("rock").setAttribute("disabled", "disabled");
-  }
-}
 
