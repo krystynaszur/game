@@ -14,6 +14,82 @@ var random = function(items) {
 
 var items = [1,2,3];
 
+var showModal = function(typeOfModal){
+  event.preventDefault();
+
+  document.getElementById('modal-overlay').classList.add('show');
+
+  if (typeOfModal == "gameSettings") {
+    document.getElementById('enter-settings').classList.add('show');
+    document.getElementById('game-end').classList.remove('show');
+  }
+  else if (typeOfModal == "gameEnd") {
+    document.getElementById('enter-settings').classList.remove('show');
+    document.getElementById('game-end').classList.add('show');
+  }
+}
+
+var hideModal = function(event){
+  event.preventDefault();
+
+  var visibleModals = document.querySelectorAll(".show");
+  for(var i = 0; i < visibleModals.length; i++){
+    visibleModals[i].classList.remove('show');
+  };
+};
+
+var closeButtons = document.querySelectorAll('.modal .close');
+
+for(var i = 0; i < closeButtons.length; i++){
+  closeButtons[i].addEventListener('click', hideModal);
+}
+
+document.querySelector('#modal-overlay').addEventListener('click', hideModal);
+
+var modals = document.querySelectorAll('.modal');
+
+for(var i = 0; i < modals.length; i++){
+  modals[i].addEventListener('click', function(event){
+    event.stopPropagation();
+  });
+}
+
+var enterGameSettings = function(event){
+  var typeOfModal = "gameSettings";
+  showModal(typeOfModal);
+   
+  gameSettings.enteredUsername ="";
+  gameSettings.maxRounds=0;
+  gameSettings.playerWins =0;
+  gameSettings.computerWins=0;
+  gameSettings.playedRounds=0;
+  
+  var enterUsername = document.getElementById('username')
+  enterUsername.value = "";
+  var enterWins = document.getElementById('wins')
+  enterWins.value = "";
+
+};
+
+var activateGame = function() {
+
+  gameSettings.enteredUsername = document.getElementById('username').value;
+  gameSettings.maxRounds = document.getElementById('wins').value;
+
+  if (gameSettings.maxRounds >0) {
+      document.getElementById("paper").removeAttribute("disabled");
+      document.getElementById("scissors").removeAttribute("disabled");
+      document.getElementById("rock").removeAttribute("disabled");
+      document.querySelector('#modal-overlay').classList.remove('show');
+  }
+}
+ 
+var submit = document.getElementById("submit-button");
+submit.addEventListener('click', activateGame);
+
+var newGame = document.getElementById('new-game');
+newGame.addEventListener('click', enterGameSettings);
+
 var computerMove = function() {
   var computerNumber = random(items); 
   
@@ -188,52 +264,9 @@ var startRound = function(move) {
   gameResultsRows.innerHTML += gameResultsTableRows
 }  
 
-var deactivateGame = function () {
-  if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
-    gameEnd(event);
-    document.getElementById("paper").setAttribute("disabled", "disabled");
-    document.getElementById("scissors").setAttribute("disabled", "disabled");
-    document.getElementById("rock").setAttribute("disabled", "disabled");
-  }
-}
-
-var enterGameSettings = function(event){
-  showModal(enterGameSettings);
-   
-  gameSettings.enteredUsername ="";
-  gameSettings.maxRounds=0;
-  gameSettings.playerWins =0;
-  gameSettings.computerWins=0;
-  gameSettings.playedRounds=0;
-  
-  var enterUsername = document.getElementById('username')
-  enterUsername.value = "";
-  var enterWins = document.getElementById('wins')
-  enterWins.value = "";
-
-};
-
-var activateGame = function() {
-
-  gameSettings.enteredUsername = document.getElementById('username').value;
-  gameSettings.maxRounds = document.getElementById('wins').value;
-
-  if (gameSettings.maxRounds >0) {
-      document.getElementById("paper").removeAttribute("disabled");
-      document.getElementById("scissors").removeAttribute("disabled");
-      document.getElementById("rock").removeAttribute("disabled");
-      document.querySelector('#modal-overlay').classList.remove('show');
-  }
-}
- 
-var submit = document.getElementById("submit-button");
-submit.addEventListener('click', activateGame);
-
-var newGame = document.getElementById('new-game');
-newGame.addEventListener('click', enterGameSettings);
-
 var gameEnd = function(event){
-  showModal(gameEnd);
+  var typeOfModal = "gameEnd";
+  showModal(typeOfModal);
   
   var showGameResults = document.getElementById('game-results');
   showGameResults.innerHTML ="Game over, please press the NEW GAME button!<br><br> Total result is: " + 
@@ -252,42 +285,20 @@ var gameEnd = function(event){
   total.innerHTML=" ";
 };
 
-var hideModal = function(event){
-  event.preventDefault();
-
-  var visibleModals = document.querySelectorAll(".show");
-  for(var i = 0; i < visibleModals.length; i++){
-    visibleModals[i].classList.remove('show');
-  };
-};
-
-var closeButtons = document.querySelectorAll('.modal .close');
-
-for(var i = 0; i < closeButtons.length; i++){
-  closeButtons[i].addEventListener('click', hideModal);
-}
-
-document.querySelector('#modal-overlay').addEventListener('click', hideModal);
-
-var modals = document.querySelectorAll('.modal');
-
-for(var i = 0; i < modals.length; i++){
-  modals[i].addEventListener('click', function(event){
-    event.stopPropagation();
-  });
-}
-
-var showModal = function(typeOfModal){
-  event.preventDefault();
-
-  document.getElementById('modal-overlay').classList.add('show');
-
-  if (typeOfModal == enterGameSettings) {
-    document.getElementById('enter-settings').classList.add('show');
-    document.getElementById('game-end').classList.remove('show');
-  }
-  else if (typeOfModal == gameEnd) {
-    document.getElementById('enter-settings').classList.remove('show');
-    document.getElementById('game-end').classList.add('show');
+var deactivateGame = function () {
+  if (gameSettings.playerWins == gameSettings.maxRounds ||gameSettings.computerWins == gameSettings.maxRounds) {  
+    gameEnd(event);
+    document.getElementById("paper").setAttribute("disabled", "disabled");
+    document.getElementById("scissors").setAttribute("disabled", "disabled");
+    document.getElementById("rock").setAttribute("disabled", "disabled");
   }
 }
+
+
+
+
+
+
+
+
+
