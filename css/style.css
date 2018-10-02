@@ -3,11 +3,18 @@ body {
   padding: 10px;
   text-align: center;
   font-family: 'Sunflower', sans-serif;
+  background-image: url("../images/rock.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .game {
   text-align: center;
   font-size: 15px;
+  background-color: white;
+  width: 40vw;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 #new-game {
